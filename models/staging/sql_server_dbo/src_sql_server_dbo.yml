@@ -1,0 +1,144 @@
+version: 2
+
+sources:
+  - name: sql_server_dbo
+    database: ALUMNO19_DEV_BRONZE_DB
+    tables:
+      - name: addresses
+        columns:
+          - name: address_id
+            description: ""
+          - name: zipcode
+            description: ""
+          - name: country
+            description: ""
+          - name: address
+            description: ""
+          - name: state
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: order_items
+        columns:
+          - name: order_id
+            description: ""
+          - name: product_id
+            description: ""
+          - name: quantity
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: orders
+        columns:
+          - name: order_id
+            description: ""
+          - name: shipping_service
+            description: ""
+          - name: shipping_cost
+            description: ""
+          - name: address_id
+            description: ""
+          - name: created_at
+            description: ""
+          - name: promo_id
+            description: ""
+          - name: estimated_delivery_at
+            description: ""
+          - name: order_cost
+            description: ""
+          - name: user_id
+            description: ""
+          - name: order_total
+            description: ""
+          - name: delivered_at
+            description: ""
+          - name: tracking_id
+            description: ""
+          - name: status
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: products
+        columns:
+          - name: product_id
+            description: ""
+          - name: price
+            description: ""
+          - name: name
+            description: ""
+          - name: inventory
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: promos
+        columns:
+          - name: promo_id
+            description: ""
+          - name: discount
+            description: ""
+          - name: status
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+
+      - name: users
+        columns:
+          - name: user_id
+            description: ""
+          - name: updated_at
+            description: ""
+          - name: address_id
+            description: ""
+          - name: last_name
+            description: ""
+          - name: created_at
+            description: ""
+          - name: phone_number
+            description: ""
+          - name: total_orders
+            description: ""
+          - name: first_name
+            description: ""
+          - name: email
+            description: ""
+          - name: _fivetran_deleted
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+      - name: events
+        columns:
+          - name: event_id
+            description: ""
+          - name: session_id
+            description: ""
+          - name: user_id
+            description: ""
+          - name: page_url
+            description: ""
+          - name: created_at
+            description: ""
+          - name: event_type
+            description: ""
+          - name: order_id
+            description: ""
+          - name: product_id
+            description: ""
+          - name: _fivetran_synced
+            description: ""
+            
+
+         
