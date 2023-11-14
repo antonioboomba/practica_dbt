@@ -3,7 +3,7 @@ version: 2
 sources:
 
   - name: src_personas # name of the source 
-    schema: dbt_antonioboomba # this is the schema our raw data lives in
+    schema: DBT_ANTONIOBOOMBA # this is the schema our raw data lives in
     database: ALUMNO19 # this is the name of our database
 
     quoting:
