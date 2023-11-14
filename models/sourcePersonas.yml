@@ -2,22 +2,20 @@ version: 2
 
 sources:
 
-  - name: google_sheets # name of the source 
-    schema: google_sheets # this is the schema our raw data lives in
-    database: ALUMNO19_DEV_BRONZE_DB # this is the name of our database
+  - name: src_personas # name of the source 
+    schema: dbt_antonioboomba # this is the schema our raw data lives in
+    database: ALUMNO19 # this is the name of our database
 
     quoting:
       database: false
       schema: false
       identifier: false
-
     freshness:
       warn_after: {count: 24, period: hour}
       error_after: {count: 48, period: hour}
 
     tables:
-
-      - name: personas
+      - name: budget
         loaded_at_field: _fivetran_synced
         columns:
           - name: _row
