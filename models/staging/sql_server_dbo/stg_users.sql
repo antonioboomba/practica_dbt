@@ -1,17 +1,12 @@
-
-{{
-    config(
-        materialized='view'
-    )
-
-
-}}
 with 
-src as (
+
+source as (
+
     select * from {{ source('sql_server_dbo', 'users') }}
+
 ),
 
-users as (
+renamed as (
 
     select
         user_id,
@@ -26,10 +21,8 @@ users as (
         _fivetran_deleted,
         _fivetran_synced
 
-    from src
+    from source
 
 )
 
-select * from users
-
-
+select * from renamed

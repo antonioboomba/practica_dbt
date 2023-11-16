@@ -1,18 +1,18 @@
-WITH src_budget_products AS (
-    SELECT * 
-    FROM BRONZE.google_sheets.budget
-    ),
+with source as (
+    select * from {{ source('google_sheets', 'budget')}}
+),
 
-renamed_casted AS (
-    SELECT
-        _row
-        , product_id
-        , quantity
-        , month
-        , _fivetran_synced AS date_load
-    FROM src_budget_products
-    )
+renamed as (
 
-SELECT * FROM renamed_casted
-limit 500
-/* limit added automatically by dbt cloud */
+    select
+        _row,
+        quantity,
+        month,
+        product_id,
+        _fivetran_synced AS date_load
+
+    from source
+
+)
+
+select * from renamed
