@@ -20,9 +20,7 @@ renamed as (
         email,
         _fivetran_deleted,
         _fivetran_synced
-
     from source
-
 )
 
 select * from renamed

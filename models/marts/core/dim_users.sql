@@ -1,28 +1,24 @@
-with 
 
-source as (
-
-    select * from {{ ref('stg_users') }}
-
+WITH stg_orders AS (
+    SELECT * 
+    FROM {{ ref('stg_users') }}
 ),
 
-renamed as (
 
-    select
-        user_id
+renamed_casted AS (
+     SELECT
+        user_id,
+        updated_at,
         address_id,
         last_name,
+        created_at,
         phone_number,
         total_orders,
-        created_at,
-        updated_at,
         first_name,
         email,
         _fivetran_deleted,
         _fivetran_synced
-        date_load,
-    from source
-
+     FROM stg_users
 )
 
-select * from renamed
+SELECT * FROM renamed_casted

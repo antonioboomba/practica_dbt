@@ -11,8 +11,8 @@ WITH stg_orders AS (
 
 
 renamed_casted AS (
-    SELECT
-     order_id,
+     SELECT
+        order_id,
         shipping_service,
         shipping_cost,
         address_id,
@@ -24,10 +24,12 @@ renamed_casted AS (
         order_total,
         delivered_at,
         tracking_id,
-        status_order,
-        date_load,
-
+        status,
+        _fivetran_deleted,
+        _fivetran_synced
     FROM stg_orders
     )
+
+
 
 SELECT * FROM renamed_casted

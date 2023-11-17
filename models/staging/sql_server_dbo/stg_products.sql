@@ -11,7 +11,6 @@ src as (
 ),
 
 products as (
-
     select
         product_id,
         price,

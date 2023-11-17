@@ -1,16 +1,17 @@
 {{
-    config(
-        materialized='view'
-    )
+  config(
+    materialized='table'
+  )
 }}
 
-WITH src_events AS (
+WITH stg_events AS (
     SELECT * 
-    FROM {{ source ('sql_server_dbo', 'events') }}
-    ),
+    FROM {{ ref('stg_events') }}
+),
 
-renamed_casted AS (
-    SELECT
+
+stg_events_casted AS (
+     SELECT
         event_id
         ,page_url
         ,event_type
@@ -21,7 +22,7 @@ renamed_casted AS (
         ,order_id
         ,_fivetran_deleted
         ,_fivetran_synced
-    FROM src_events
+    FROM stg_events
     )
 
-SELECT * FROM renamed_casted
+SELECT * FROM stg_events_casted
