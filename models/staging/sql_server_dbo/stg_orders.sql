@@ -24,7 +24,6 @@ renamed as (
         status,
         _fivetran_deleted,
         _fivetran_synced
-
     from source
 
 )
