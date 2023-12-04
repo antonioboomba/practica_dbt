@@ -4,21 +4,20 @@
     )
 }}
 
-WITH stg_promos AS (
-    SELECT * 
+WITH stg_products AS (
+    SELECT *
     FROM {{ ref('stg_products') }}
 ),
 
-stg_promos_casted as 
-(
-    SELECT 
+stg_products_casted AS (
+    SELECT
         product_id,
         price,
         name,
         inventory,
         _fivetran_deleted,
         _fivetran_synced
-    FROM stg_promos
+    FROM stg_products
 )
 
-SELECT * FROM stg_promos_casted
+SELECT * FROM stg_products_casted

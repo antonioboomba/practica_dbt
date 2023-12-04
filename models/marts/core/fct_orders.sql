@@ -4,32 +4,26 @@
   )
 }}
 
-WITH stg_orders AS (
-    SELECT * 
-    FROM {{ ref('stg_orders') }}
-),
 
+WITH stg_orders AS (SELECT * FROM {{ ref('stg_orders') }})
+SELECT
+    stg_orders.order_id,
+    stg_orders.shipping_service,
+    stg_orders.shipping_cost,
+    stg_orders.address_id,
+    stg_orders.created_at,
+    stg_orders.promo_id,
+    stg_orders.estimated_delivery_at,
+    cstg_orders.order_cost,
+    stg_orders.user_id,
+    stg_orders.order_total,
+    stg_orders.delivered_at,
+    stg_orders.tracking_id,
+    stg_orders.status,
+    stg_orders._fivetran_deleted,
+    stg_orders._fivetran_synced  
+FROM stg_order
 
-renamed_casted AS (
-     SELECT
-        order_id,
-        shipping_service,
-        shipping_cost,
-        address_id,
-        created_at,
-        promo_id,
-        estimated_delivery_at,
-        order_cost,
-        user_id,
-        order_total,
-        delivered_at,
-        tracking_id,
-        status,
-        _fivetran_deleted,
-        _fivetran_synced
-    FROM stg_orders
-    )
+left join {{ref('stg_addresses')}} on stg_orders.address_id = stg_addresses.address_id
+left join {{ref('stg_promos')}} on stg_orders.promo_id = stg_promos.promo_id
 
-
-
-SELECT * FROM renamed_casted

@@ -2,7 +2,7 @@ with
 
 source as (
 
-    select * from {{ source('sql_server_dbo', 'orders') }}
+    select created_at from {{ source('sql_server_dbo', 'orders') }}
 
 ),
 

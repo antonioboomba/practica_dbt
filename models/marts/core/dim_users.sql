@@ -6,7 +6,8 @@ WITH stg_orders AS (
 
 
 renamed_casted AS (
-     SELECT
+     select
+        {{dbt_utils.surrogate_key(['user_id'])}},
         user_id,
         updated_at,
         address_id,
@@ -22,3 +23,7 @@ renamed_casted AS (
 )
 
 SELECT * FROM renamed_casted
+
+
+
+

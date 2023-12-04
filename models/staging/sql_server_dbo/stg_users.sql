@@ -7,7 +7,6 @@ source as (
 ),
 
 renamed as (
-
     select
         user_id,
         updated_at,

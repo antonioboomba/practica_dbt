@@ -9,72 +9,86 @@ sources:
         columns:
           - name: address_id
             data_type: varchar
-            description: ""
+            description: "Es el identificador de addresses"
+            tests:
+              - unique
+              - not_null
+            meta:
+              is_primary_key: true
           - name: zipcode
             data_type: number
-            description: ""
+            description: "Es el código postal del envío"
           - name: country
             data_type: varchar
-            description: ""
+            description: "Es la ciudad desde donde se realiza el envío"
           - name: address
             data_type: varchar
-            description: ""
+            description: "Es la dirección del envío"
           - name: state
             data_type: varchar
-            description: ""
+            description: "Es el estado desde donde se envía"
           - name: _fivetran_deleted
             data_type: boolean
-            description: ""
+            description: "Parametro de fivetran"
           - name: _fivetran_synced
             data_type: timestamp_tz
-            description: ""
+            description: "Parametro de fivetran"
 
       - name: events
         description: ""
         columns:
           - name: event_id
             data_type: varchar
-            description: ""
+            description: "Estados del carrito"
+            tests:
+              - not_null
+              - unique
+            meta:
+                  is_primary_key:  true
           - name: page_url
             data_type: varchar
-            description: ""
+            description: "Página del producto"
           - name: event_type
             data_type: varchar
-            description: ""
+            description: "Nos muestra lo que ha pasado con el producto si se ha añadido o no al carrito"
           - name: user_id
             data_type: varchar
-            description: ""
+            description: "La id del usuario que ha comprado el producto"
           - name: product_id
             data_type: varchar
-            description: ""
+            description: "La id del producto que se ha comprado"
           - name: session_id
             data_type: varchar
-            description: ""
+            description: "La sesión que identifica al usuario"
           - name: created_at
             data_type: timestamp_ntz
-            description: ""
+            description: "La fecha en la que se ha creado"
           - name: order_id
             data_type: varchar
-            description: ""
+            description: "El id del pedido"
           - name: _fivetran_deleted
             data_type: boolean
-            description: ""
+            description: "Si se ha eliminado de fivetran o no."
           - name: _fivetran_synced
             data_type: timestamp_tz
-            description: ""
+            description: "Si se ha sincronizado con fivetran o no"
 
       - name: order_items
-        description: ""
+        description: "Nos da información de cuantos productos se han pedido"
         columns:
           - name: order_id
             data_type: varchar
             description: ""
+            tests: 
+              - not_null
           - name: product_id
             data_type: varchar
-            description: ""
+            description: "El id del producto"
+            tests:
+              - not_null
           - name: quantity
             data_type: number
-            description: ""
+            description: "Cuantos productos se han comprado o se van a comprar"
           - name: _fivetran_deleted
             data_type: boolean
             description: ""
@@ -87,43 +101,48 @@ sources:
         columns:
           - name: order_id
             data_type: varchar
-            description: ""
+            description: "El id del pedido"
+            tests:
+              - not_null
+              - unique
+            meta:
+                  is_primary_key:  true
           - name: shipping_service
             data_type: varchar
-            description: ""
+            description: "El proveedor del envío"
           - name: shipping_cost
             data_type: float
-            description: ""
+            description: "El coste del envío"
           - name: address_id
             data_type: varchar
-            description: ""
+            description: "El id de la dirección que se ha enviado"
           - name: created_at
             data_type: timestamp_tz
-            description: ""
+            description: "Cuándo fue creado este pedido"
           - name: promo_id
             data_type: varchar
-            description: ""
+            description: "El id de la promo"
           - name: estimated_delivery_at
             data_type: timestamp_tz
-            description: ""
+            description: "La fecha estimada de llegada"
           - name: order_cost
             data_type: float
-            description: ""
+            description: "Cuánto ha costado el pedido (que contiene productos)"
           - name: user_id
             data_type: varchar
-            description: ""
+            description: "El usuario que ha hecho el pedido"
           - name: order_total
             data_type: float
-            description: ""
+            description: "El coste total del pedido"
           - name: delivered_at
             data_type: timestamp_tz
-            description: ""
+            description: "En que fecha se envío el pedido"
           - name: tracking_id
             data_type: varchar
-            description: ""
+            description: "El id del tracking del pedido"
           - name: status
             data_type: varchar
-            description: ""
+            description: "Estado en el que se encuentra el pedido"
           - name: _fivetran_deleted
             data_type: boolean
             description: ""
@@ -132,20 +151,24 @@ sources:
             description: ""
 
       - name: products
-        description: ""
+        description: "Información acerca de todos los productos"
         columns:
           - name: product_id
             data_type: varchar
-            description: ""
+            description: "Identificador del producto"
+            tests:
+              - not_null
+            meta:
+                  is_primary_key:  true
           - name: price
             data_type: float
-            description: ""
+            description: "El precio del producto"
           - name: name
             data_type: varchar
-            description: ""
+            description: "El nombre del producto"
           - name: inventory
             data_type: number
-            description: ""
+            description: "Cuántos hay en stock"
           - name: _fivetran_deleted
             data_type: boolean
             description: ""
@@ -154,17 +177,21 @@ sources:
             description: ""
 
       - name: promos
-        description: ""
+        description: "Promociones activas o no"
         columns:
           - name: promo_id
             data_type: varchar
-            description: ""
+            description: "El identificador de nuestra promo"
+            tests:
+              - not_null
+            meta:
+                  is_primary_key:  true
           - name: discount
             data_type: number
-            description: ""
+            description: "El descuento que va a tener nuestra promo"
           - name: status
             data_type: varchar
-            description: ""
+            description: "El status de nuestra promo (inactive,active)"
           - name: _fivetran_deleted
             data_type: boolean
             description: ""
@@ -173,35 +200,39 @@ sources:
             description: ""
 
       - name: users
-        description: ""
+        description: "Listado de usuarios que están registrados en nuestra página"
         columns:
           - name: user_id
             data_type: varchar
-            description: ""
+            description: "Es el identificador del usuario"
+            tests:
+              - not_null
+            meta:
+                  is_primary_key:  true
           - name: updated_at
             data_type: timestamp_tz
-            description: ""
+            description: "Cuándo se actualizó"
           - name: address_id
             data_type: varchar
-            description: ""
+            description: "Contiene su dirección"
           - name: last_name
             data_type: varchar
-            description: ""
+            description: "Apellidos del usuario"
           - name: created_at
             data_type: timestamp_tz
-            description: ""
+            description: "Cuándo se creó"
           - name: phone_number
             data_type: varchar
-            description: ""
+            description: "Número de telefono"
           - name: total_orders
             data_type: number
-            description: ""
+            description: "Cuántos pedidos ha realizado"
           - name: first_name
             data_type: varchar
-            description: ""
+            description: "Nombre del usuario"
           - name: email
             data_type: varchar
-            description: ""
+            description: "email del usuario"
           - name: _fivetran_deleted
             data_type: boolean
             description: ""
