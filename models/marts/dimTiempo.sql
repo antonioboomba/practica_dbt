@@ -1,2 +1,3 @@
-WITH date_dimension as SELECT * FROM  {{ref('stg_tiempo')}}
+WITH stg_date as SELECT * FROM  {{ref('stg_tiempo')}}
 
+select * from stg_date

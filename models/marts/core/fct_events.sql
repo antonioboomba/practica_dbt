@@ -5,8 +5,19 @@
 }}
 
 WITH stg_events AS (
-    SELECT * 
+    SELECT 
+    event_id,
+    session_id,
+        user_id,
+        event_type,
+        product_id,
+        order_id,
+        created_at_utc as created_at_utc,
+        created_at_utc::date as created_at_utc_date,
+        page_url
+
     FROM {{ ref('stg_events') }}
+
 ),
 
 
