@@ -1,31 +1,46 @@
-with 
 
-source as (
+{{ config(
+    materialized='incremental',
+    unique_key = 'order_id',
+    on_schema_change='fail'
+    ) 
+    }}
 
-    select created_at from {{ source('sql_server_dbo', 'orders') }}
+with orders as(
+
+    select *
+    from {{ source('sql_server_dbo', 'orders') }}
+
+{% if is_incremental() %}
+	  where _fivetran_synced > (select max(_fivetran_synced) from {{ this }})
+{% endif %}
 
 ),
 
-renamed as (
-
+stg_orders as(
     select
-        order_id,
-        shipping_service,
-        shipping_cost,
-        address_id,
-        created_at,
-        promo_id,
-        estimated_delivery_at,
-        order_cost,
-        user_id,
-        order_total,
-        delivered_at,
-        tracking_id,
-        status,
-        _fivetran_deleted,
-        _fivetran_synced
-    from source
+        order_id::varchar(50) as order_id,
+        user_id::varchar(50) as user_id,
+        address_id::varchar(50) as address_id,
+        decode(promo_id,null,'no_promo','','no_promo',promo_id)::varchar(50) as promo_id,
+       
+    --  delivery/shipping related
+        decode(status,null,'no_status','','no_status',status)::varchar(50) as status,
+        decode(tracking_id,null,'no_tracking_id','','no_tracking_id',tracking_id)::varchar(50) as tracking_id,
+        decode(shipping_service,null,'no_shipping_service','','no_shipping_service',shipping_service)::varchar(50) as shipping_service,
 
+    -- dates
+        created_at::timestamp as created_at_utc,
+        estimated_delivery_at::timestamp as estimated_delivery_at_utc,
+        delivered_at::timestamp as delivered_at_utc,
+
+    -- measures:
+        order_cost::decimal(24,2) as order_cost_usd,
+        shipping_cost::decimal(24,2) as shipping_cost_usd,
+        order_total::decimal(24,2) as order_total_usd,
+        _fivetran_synced::timestamp as _fivetran_synced
+        
+    from orders
 )
 
-select * from renamed
+select *  from stg_orders

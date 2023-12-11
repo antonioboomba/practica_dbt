@@ -5,35 +5,38 @@
 }}
 
 WITH stg_events AS (
-    SELECT 
-    event_id,
-    session_id,
-        user_id,
-        event_type,
-        product_id,
-        order_id,
-        created_at_utc as created_at_utc,
-        created_at_utc::date as created_at_utc_date,
-        page_url
-
+    SELECT * 
     FROM {{ ref('stg_events') }}
-
+),
+dim_users as (
+    select * from {{ref('dim_users')}}
+),
+dim_products as ( 
+    select * from {{ref('dim_products')}}
 ),
 
 
-stg_events_casted AS (
-     SELECT
-        event_id
-        ,page_url
-        ,event_type
-        ,user_id
-        ,product_id
-        ,session_id
-        ,created_at
-        ,order_id
-        ,_fivetran_deleted
-        ,_fivetran_synced
-    FROM stg_events
-    )
+fact_events as(
+    select
+        a.event_id,
+        a.session_id,
+        b.user_sk,
+        c.event_types_sk,
+        a.event_type,
+        d.product_sk,
+        e.order_sk,
+        f.date_key,
+        a.created_at_utc,
+        a.page_url
 
-SELECT * FROM stg_events_casted
+    from stg_events a 
+    left join dim_users b on b.user_id = a.user_id
+    left join dim_event_types c on c.event_type= a.event_type
+    left join dim_products d on d.product_id = a.product_id
+    left join dim_sales_orders e on e.order_id = a.order_id
+    left join dim_date f on f.date_day = a.created_at_utc_date
+    
+    order by 2,9
+)
+
+SELECT * FROM fact_events

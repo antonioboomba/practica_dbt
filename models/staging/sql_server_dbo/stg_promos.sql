@@ -1,22 +1,22 @@
 with 
 
-source as (
+src_promos as (
 
     select * from {{ source('sql_server_dbo', 'promos') }}
 
 ),
 
-renamed as (
+stg_promos as (
 
     select
-        promo_id,
-        discount,
-        status,
-        _fivetran_deleted,
+        decode(promo_id,'','no_promo_id',null,'no_promo_id',promo_id)::varchar(50) as promo_id,
+        discount::float as discount_promo,
+        status::varchar(50),
+        decode(_fivetran_deleted,null,'no_date_load',_fivetran_deleted) as date_load,
         _fivetran_synced
 
-    from source
+    from src_promos
 
 )
 
-select * from renamed
+select * from stg_promos

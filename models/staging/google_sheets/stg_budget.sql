@@ -5,11 +5,11 @@ with source as (
 renamed as (
 
     select
-        _row,
-        quantity,
-        month,
-        product_id,
-        _fivetran_synced AS date_load
+        _row::number as ID_ROW,
+        quantity::number as Quantity,
+        month::date as Month,
+        product_id::VARCHAR(256) as product_id,
+        _fivetran_synced::timestamp AS date_load
 
     from source
 

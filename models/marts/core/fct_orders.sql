@@ -7,6 +7,7 @@
 
 WITH stg_orders AS (SELECT * FROM {{ ref('stg_orders') }})
 SELECT
+    -- Detalles del producto
     stg_orders.order_id,
     stg_orders.shipping_service,
     stg_orders.shipping_cost,
