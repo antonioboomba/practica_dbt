@@ -1,8 +1,3 @@
-{{ config(
-    materialized='incremental',
-    unique_key='order_id', 
-    on_schema_change='fail' 
-)}}
 
 -- Definición de la tabla "stg_orders" que representa los pedidos
 with orders as (

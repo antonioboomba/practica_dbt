@@ -1,18 +1,18 @@
-with source as (
-    select * from {{ source('google_sheets', 'budget')}}
+with src_budget_products as(
+
+    select *
+    from {{ source('google_sheets', 'budget') }}
 ),
 
-renamed as (
-
+budget as (
     select
-        _row::number as ID_ROW,
-        quantity::number as Quantity,
-        month::date as Month,
-        product_id::VARCHAR(256) as product_id,
-        _fivetran_synced::timestamp AS date_load
+        {{dbt_utils.surrogate_key( ['_row'])}} as budget_sk,
+        product_id,
+        quantity as target_quantity,
+        month as date_day,
+        _fivetran_synced AS date_load
+    from src_budget_products
+    order by month asc
+    )
 
-    from source
-
-)
-
-select * from renamed
+select * from budget
