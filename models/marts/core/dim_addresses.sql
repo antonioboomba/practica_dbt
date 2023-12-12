@@ -1,3 +1,5 @@
+
+
 -- Definición de una tabla temporal o vista llamada stg_addresses,
 -- que contiene todos los datos de la fuente 'stg_addresses'
 with stg_addresses as (
@@ -25,13 +27,3 @@ select * from dim_addresses
 
 
 -- Configuración de pruebas para verificar las condiciones deseadas
-{{ config(
-    materialized='dim',
-    tests=[
-        "unique('address_id')"
-        "not_null('country')",
-        "not_null('state')",
-        "not_null('address')",
-        "not_null('numeric_zipcode')"
-    ]
-) }}

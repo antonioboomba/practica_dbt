@@ -5,33 +5,33 @@
     on_schema_change='fail'
 ) }}
 
--- Documentación del modelo
-
--- CTE para cargar datos de order_items
+-- Definición de CTE para stg_orders
 WITH stg_orders AS (
     SELECT *
     FROM {{ source('sql_server_dbo', 'order_items') }}
-    
-    -- Verifica si es un modelo incremental
-    {% if is_incremental() %}
-        -- Si es incremental, selecciona las fechas (_fivetran_synced) mayores que la fecha en el modelo
-        WHERE _fivetran_synced > (SELECT MAX(date_load) FROM {{ this }})
-    {% endif %}
 ),
 
--- Transformaciones y asignación de valores predeterminados
+-- Definición de CTE para max_synced_date
+max_synced_date AS (
+    SELECT MAX(_fivetran_synced) AS max_synced
+    FROM stg_orders
+),
+
+-- Definición de CTE para order_item
 order_item AS (
     SELECT
         -- Order Id
-        COALESCE(order_id::varchar(50), 'no_order_id') AS order_id,
+        order_id::varchar(50) AS order_id,
         -- Product Id
-        COALESCE(NULLIF(product_id, ''), 'no_product_id') AS product_id,
+        COALESCE(NULLIF(product_id, ''), 'no_product_id')::varchar(50) AS product_id,
         -- Quantity
-        COALESCE(CAST(quantity AS int), 0) AS quantity,
-        -- Fechas
-        COALESCE(_fivetran_synced, 'no_data_synced') AS date_load
+        COALESCE(NULLIF(quantity, ''), 'no_quantity')::int AS quantity,
+        -- Fecha de carga
+        _fivetran_synced AS date_load
     FROM stg_orders
+    -- Filtra solo las filas que han sido actualizadas desde la última ejecución
+    WHERE _fivetran_synced > (SELECT max_synced FROM max_synced_date)
 )
 
--- Selección final
+-- Selecciona todos los datos de order_item
 SELECT * FROM order_item

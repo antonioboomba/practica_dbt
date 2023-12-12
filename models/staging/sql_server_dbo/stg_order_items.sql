@@ -1,10 +1,4 @@
-{{
-    config(
-        materialized='incremental',
-        unique_key = 'order_id',
-        on_schema_change = 'fail'
-    )
-}}
+
 
 
 WITH stg_orders as (
@@ -29,8 +23,7 @@ order_item as (
         -- Quantity
         decode(quantity,null,'no_quantity',quantity)::int as quantity,
         -- dates
-        decode(_fivetran_synced,null,'no_data_synced',_fivetran_synced) as date_load
-
+        _fivetran_synced as date_load
     from stg_orders
 
 )
