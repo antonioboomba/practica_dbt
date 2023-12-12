@@ -1,8 +1,15 @@
-{{
-    config(
-        materialized='table'
-    )
-}}
+
+-- Configuración de pruebas
+{{ config(
+    materialized='table',
+    unique_key='product_id',
+    tests=[
+        "unique('product_id')",
+        "not_null('product_name')",
+        "not_null('price_usd')"
+    ]
+) }}
+
 
 WITH stg_products AS (
     SELECT *
@@ -11,12 +18,11 @@ WITH stg_products AS (
 
 stg_products_casted AS (
     SELECT
-        product_id,
-        price,
-        name,
-        inventory,
-        _fivetran_deleted,
-        _fivetran_synced
+       COALESCE(product_id, 'default_id') AS product_id,
+        COALESCE(price_usd, 0.00) AS price_usd,
+        COALESCE(product_name, 'unknown') AS product_name,
+        COALESCE(inventory, 0) AS inventory,
+        COALESCE(fivetran_del, false) AS fivetran_del
     FROM stg_products
 )
 
